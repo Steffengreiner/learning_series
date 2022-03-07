@@ -3,15 +3,16 @@ package components.views;
 import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import components.GridUtils;
+import components.Responsive;
 import components.ViewModel;
 import domain.Player;
 
 /**
  * View showing the detailed wins for each FantasyClass for a Player
  */
-public class DetailedView extends VerticalLayout {
+public class DetailedView extends VerticalLayout implements Responsive {
 
   private final ViewModel viewModel;
   private final Grid<Player> detailedGrid;
@@ -26,6 +27,8 @@ public class DetailedView extends VerticalLayout {
   private void init() {
     setupGrid();
     bindData();
+    disableResizableColumns();
+    makeGridResponsive();
   }
 
   private void setupGrid() {
@@ -35,11 +38,28 @@ public class DetailedView extends VerticalLayout {
     detailedGrid.addColumn(Player::getRogueWins).setCaption("Rogue Wins").setId("rogueWins");
     detailedGrid.addColumn(Player::getPriestWins).setCaption("Priest Wins").setId("priestWins");
     detailedGrid.setWidth(100, Unit.PERCENTAGE);
-    GridUtils.makeGridResponsive(detailedGrid);
+
   }
 
   private void bindData() {
     ListDataProvider<Player> playerDataProvider = DataProvider.ofCollection(viewModel.getPlayers());
     detailedGrid.setDataProvider(playerDataProvider);
   }
+
+  @Override
+  public void makeGridResponsive() {
+    detailedGrid.addAttachListener(attachEvent -> {
+      UI.getCurrent().getPage().addBrowserWindowResizeListener(resizeEvent -> {
+        detailedGrid.recalculateColumnWidths();
+      });
+    });
+  }
+
+  @Override
+  public void disableResizableColumns() {
+    detailedGrid.getColumns().forEach(column ->
+    {
+      column.setResizable(false);
+    });
+    }
 }

@@ -3,15 +3,16 @@ package components.views;
 import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import components.GridUtils;
+import components.Responsive;
 import components.ViewModel;
 import domain.Summary;
 
 /**
  * View showing a Summary of a Player containing the best performing class and total win amount
  */
-public class SummaryView extends VerticalLayout {
+public class SummaryView extends VerticalLayout implements Responsive {
 
   private final ViewModel viewModel;
   private final Grid<Summary> summaryGrid;
@@ -26,6 +27,8 @@ public class SummaryView extends VerticalLayout {
   private void init() {
     setupGrid();
     bindData();
+    disableResizableColumns();
+    makeGridResponsive();
   }
 
   private void setupGrid() {
@@ -33,7 +36,6 @@ public class SummaryView extends VerticalLayout {
     summaryGrid.addColumn(Summary::getTotalWins).setCaption("Total Wins").setId("totalWins");
     summaryGrid.addColumn(Summary::getBestClass).setCaption("Best Class").setId("bestClass");
     summaryGrid.setWidth(100, Unit.PERCENTAGE);
-    GridUtils.makeGridResponsive(summaryGrid);
   }
 
   private void bindData() {
@@ -42,4 +44,20 @@ public class SummaryView extends VerticalLayout {
     summaryGrid.setDataProvider(playerDataProvider);
   }
 
+  @Override
+  public void makeGridResponsive() {
+    summaryGrid.addAttachListener(attachEvent -> {
+      UI.getCurrent().getPage().addBrowserWindowResizeListener(resizeEvent -> {
+        summaryGrid.recalculateColumnWidths();
+      });
+    });
+  }
+
+  @Override
+  public void disableResizableColumns() {
+    summaryGrid.getColumns().forEach(column ->
+    {
+      column.setResizable(false);
+    });
+  }
 }
