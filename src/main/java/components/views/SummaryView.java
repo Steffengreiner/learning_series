@@ -4,6 +4,7 @@ import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.VerticalLayout;
+import components.GridUtils;
 import components.ViewModel;
 import domain.Summary;
 
@@ -32,6 +33,7 @@ public class SummaryView extends VerticalLayout {
     summaryGrid.addColumn(Summary::getTotalWins).setCaption("Total Wins").setId("totalWins");
     summaryGrid.addColumn(Summary::getBestClass).setCaption("Best Class").setId("bestClass");
     summaryGrid.setWidth(100, Unit.PERCENTAGE);
+    GridUtils.makeGridResponsive(summaryGrid);
   }
 
   private void bindData() {

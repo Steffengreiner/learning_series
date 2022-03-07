@@ -4,6 +4,7 @@ import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.VerticalLayout;
+import components.GridUtils;
 import components.ViewModel;
 import domain.Player;
 
@@ -34,6 +35,7 @@ public class DetailedView extends VerticalLayout {
     detailedGrid.addColumn(Player::getRogueWins).setCaption("Rogue Wins").setId("rogueWins");
     detailedGrid.addColumn(Player::getPriestWins).setCaption("Priest Wins").setId("priestWins");
     detailedGrid.setWidth(100, Unit.PERCENTAGE);
+    GridUtils.makeGridResponsive(detailedGrid);
   }
 
   private void bindData() {
