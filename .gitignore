@@ -1,0 +1,35 @@
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+target/
+**/.flattened-pom.xml
+
+# Some of our applications generate logs, which should be ignored by git
+logs/
+
+# Other
+**/.factorypath
+
+# compiled Vaadin widgetsets
+**/VAADIN/widgetsets
+**/styles.css
+
+# From docs
+**/__pycache__
+
+# Properties, which may contain sensitive information
+**/developer.properties
